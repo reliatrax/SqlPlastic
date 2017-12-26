@@ -1,0 +1,153 @@
+ 	[global::System.Data.Linq.Mapping.TableAttribute(Name="{{SchemaName}}.{{TableName}}")]
+	public partial class {{ClassName}} : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+        
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+
+    {{#each Columns}}
+		private {{MemberType}} _{{MemberName}};
+        
+    {{/each}}
+    {{#each EntitySets}}
+        private EntitySet<{{ReferencedColumn.Table.ClassName}}> _{{EntitySetName}};
+
+    {{/each}}
+    {{#each EntityRefs}}
+        private EntityRef<{{ReferencedColumn.Table.ClassName}}> _{{EntityRefName}};
+
+    {{/each}}
+    #region Extensibility Method Definitions
+        partial void OnLoaded();
+        partial void OnValidate(System.Data.Linq.ChangeAction action);
+        partial void OnCreated();
+    {{#each Columns}}
+        partial void On{{MemberName}}Changing({{MemberType}} value);
+        partial void On{{MemberName}}Changed();
+    {{/each}}		
+    #endregion
+		
+		public {{ClassName}}()
+		{
+        {{#each EntityRefs}}
+            this._{{EntityRefName}} = default(EntityRef<{{ReferencedColumn.Table.ClassName}}>);
+        {{/each}}
+        {{#each EntitySets}}
+            this._{{EntitySetName}} = new EntitySet<{{ReferencedColumn.Table.ClassName}}>(new Action<{{ReferencedColumn.Table.ClassName}}>(this.attach_{{xxx}}), new Action<{{ReferencedColumn.Table.ClassName}}>(this.detach_{{ReferencedColumn.Table.ClassName}}));
+        {{/each}}
+            
+			OnCreated();
+		}
+		
+    {{#each Columns}}
+        [global::System.Data.Linq.Mapping.ColumnAttribute({{ColumnAttributeArgs}})]
+	    public {{MemberType}} {{MemberName}}
+		{
+			get
+			{
+				return this._{{MemberName}};
+			}
+			set
+			{
+				if ((this._{{MemberName}} != value))
+				{
+                    {{#if ForeignKey}}
+   					if (this._{{ForeignKey.MemberName}}.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+                    {{/if}}
+					this.On{{MemberName}}Changing(value);
+					this.SendPropertyChanging();
+					this._{{MemberName}} = value;
+					this.SendPropertyChanged("{{MemberName}}");
+					this.On{{MemberName}}Changed();
+				}
+			}
+		}
+        
+    {{/each}}
+    {{#each EntityRefs}}
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name="{{ForeignKeyName}}", Storage="_{{EntityRefName}}", ThisKey="{{KeyColumn.ColumnName}}", OtherKey="{{ReferencedColumn.ColumnName}}", IsForeignKey=true, DeleteOnNull=xxx)]
+		public {{ReferencedColumn.Table.ClassName}} {{EntityRefName}}
+		{
+			get
+			{
+				return this._{{EntityRefName}}.Entity;
+			}
+			set
+			{
+				{{ReferencedColumn.Table.ClassName}} previousValue = this._{{EntityRefName}}.Entity;
+				if (((previousValue != value) 
+							|| (this._{{EntityRefName}}.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._{{EntityRefName}}.Entity = null;
+						previousValue.{{AssociatedSet.EntitySetName}}.Remove(this);
+					}
+					this._{{EntityRefName}}.Entity = value;
+					if ((value != null))
+					{
+						value.{{AssociatedSet.EntitySetName}}.Add(this);
+						this._{{KeyColumn.ColumnName}} = value.{{ReferencedColumn.ColumnName}};
+					}
+					else
+					{
+						this._{{KeyColumn.ColumnName}} = default({{KeyColumn.MemberType}});
+					}
+					this.SendPropertyChanged("{{EntityRefName}}");
+				}
+			}
+		}
+
+    {{/each}}
+    {{#each EntitySets}}
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="{{ForeignKeyName}}", Storage="_{{EntitySetName}}", ThisKey="{{KeyColumn.ColumnName}}", OtherKey="{{ReferencedColumn.ColumnName}}", DeleteRule="{{DeleteRule}}")]
+		public EntitySet<{{ReferencedColumn.Table.ClassName}}> {{EntitySetName}}
+		{
+			get
+			{
+				return this._{{EntitySetName}};
+			}
+			set
+			{
+				this._{{EntitySetName}}.Assign(value);
+			}
+		}
+        
+    {{/each}}
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+        
+    {{#each EntitySets}}
+   		private void attach_{{EntitySetName}}({{ReferencedColumn.Table.ClassName}} entity)
+		{
+			this.SendPropertyChanging();
+			entity.{{AssociatedRef.EntityRefName}} = this;
+		}
+		
+		private void detach_{{EntitySetName}}({{ReferencedColumn.Table.ClassName}} entity)
+		{
+			this.SendPropertyChanging();
+            entity.{{AssociatedRef.EntityRefName}} = null;
+		}
+    {{/each}}
+	}

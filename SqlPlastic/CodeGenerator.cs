@@ -1,0 +1,44 @@
+﻿using HandlebarsDotNet;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SqlPlastic
+{
+
+    public class CodeGenerator
+    {
+        Func<DataClassesModel, string> renderer;
+
+        public void CompileTemplates()
+        {
+            string tblTemplate = File.ReadAllText(".\\Templates\\table.handlebars");
+
+            string dcTemplate = File.ReadAllText(".\\Templates\\dataclasses.handlebars");
+
+            Handlebars.Configuration.TextEncoder = new NoTxtEncoder();
+
+            Handlebars.RegisterTemplate("table", tblTemplate);
+
+            renderer = Handlebars.Compile(dcTemplate);
+        }
+
+        public string RenderDataClasses( DataClassesModel model )
+        {
+            string dc = renderer(model);
+
+            return dc;
+        }
+    }
+
+    public class NoTxtEncoder : ITextEncoder
+    {
+        string ITextEncoder.Encode(string value)
+        {
+            return value;
+        }
+    }
+}
