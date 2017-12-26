@@ -72,7 +72,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Database.cs</LastGenOutput>
     </Content>
-    <None Include="readme.md" />
+    <None Include="README.md" />
     <None Include="Templates\dataclasses.handlebars">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
