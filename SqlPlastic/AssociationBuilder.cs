@@ -75,10 +75,10 @@ namespace SqlPlastic
         private static string GeneratePropertyName(Table tbl, string baseName)
         {
             // Lazy initialize the dictionary of HashSets
-            if( tablePropertyNames.TryGetValue(tbl.ObjectID, out HashSet<string> propNames) == false )
+            if( tablePropertyNames.TryGetValue(tbl.TableObjectID, out HashSet<string> propNames) == false )
             {
                 propNames = new HashSet<string>(tbl.Columns.Select(x => x.MemberName));
-                tablePropertyNames.Add(tbl.ObjectID, propNames);
+                tablePropertyNames.Add(tbl.TableObjectID, propNames);
             }
 
             // First check the basename

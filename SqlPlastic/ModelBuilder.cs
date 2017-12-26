@@ -45,7 +45,7 @@ namespace SqlPlastic
                     ClassName = className,
                     SchemaName = schemaName,
                     TableName = tableName,
-                    ObjectID = tableID,
+                    TableObjectID = tableID,
                     Columns = columns,
                     EntityRefs = new List<EntityRefModel>(),
                     EntitySets = new List<EntitySetModel>()

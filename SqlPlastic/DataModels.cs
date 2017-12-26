@@ -20,7 +20,7 @@ namespace SqlPlastic
 
         public string SchemaName { get; set; }
         public string TableName { get; set; }
-        public int ObjectID { get; set; }       // the Table ID
+        public int TableObjectID { get; set; }       // the Table ID
 
         public Column[] Columns { get; set; }
 
