@@ -28,6 +28,7 @@ namespace SqlPlastic
             //  Table 1                  Table 2
             //  dbo.Orders               dbo.Customers
             //  MyCustomerID INT  --->   CustomerID INT 
+            //    (foreign key)              (primary key)
             //
             //  Table 1 gets a property EntityRef<Customer> Customer
             //  Table 2 gets a collection EntitySet<Order>  Orders
@@ -46,6 +47,7 @@ namespace SqlPlastic
 
                 ForeignKeyName = fkd.ForeignKeyName,
                 DeleteRule = fkd.OnDelete,
+                DeleteOnNull = c1.IsNullable ?"false" :"true"   // If a non-nullable foreign key is set to null, we need to delete the associated record 
             };
 
             // --- Add an EntitySet from c1 <-- c2
@@ -65,6 +67,9 @@ namespace SqlPlastic
             // Set the cross-linking association properties
             eref.AssociatedSet = eset;
             eset.AssociatedRef = eref;
+
+            // Set the Foreign Key Column to point to this foreign key
+            c1.ForeignKey = eref;
 
             // Add to the tables
             t1.EntityRefs.Add(eref);

@@ -12,6 +12,7 @@ namespace SqlPlastic
         public string ContextName { get; set; }
 
         public Table[] Tables { get; set; }
+        public string NameSpace { get; internal set; }
     }
 
     public class Table
@@ -42,6 +43,7 @@ namespace SqlPlastic
         public int Scale { get; set; }
         public bool IsNullable { get; set; }
         public bool IsPrimaryKey { get; set; }
+        public bool IsForeignKey => ForeignKey != null;
 
         public string ColumnAttributeArgs { get; set; }
 
@@ -72,6 +74,7 @@ namespace SqlPlastic
         public EntitySetModel AssociatedSet { get; set; }
         public string ForeignKeyName { get; set; }
         public string DeleteRule { get; set; }
+        public string DeleteOnNull { get; set; }        // "true" if this is a non-nullable foreign key.  See: https://blogs.msdn.microsoft.com/dinesh.kulkarni/2008/05/11/linq-to-sql-tips-4-use-deleteonnull-if-you-want-to-delete-object-with-null-fk/
     }
 
     public class EntitySetModel

@@ -32,9 +32,8 @@
             this._{{EntityRefName}} = default(EntityRef<{{ReferencedColumn.Table.ClassName}}>);
         {{/each}}
         {{#each EntitySets}}
-            this._{{EntitySetName}} = new EntitySet<{{ReferencedColumn.Table.ClassName}}>(new Action<{{ReferencedColumn.Table.ClassName}}>(this.attach_{{xxx}}), new Action<{{ReferencedColumn.Table.ClassName}}>(this.detach_{{ReferencedColumn.Table.ClassName}}));
+            this._{{EntitySetName}} = new EntitySet<{{ReferencedColumn.Table.ClassName}}>(new Action<{{ReferencedColumn.Table.ClassName}}>(this.attach_{{EntitySetName}}), new Action<{{ReferencedColumn.Table.ClassName}}>(this.detach_{{EntitySetName}}));
         {{/each}}
-            
 			OnCreated();
 		}
 		
@@ -50,8 +49,8 @@
 			{
 				if ((this._{{MemberName}} != value))
 				{
-                    {{#if ForeignKey}}
-   					if (this._{{ForeignKey.MemberName}}.HasLoadedOrAssignedValue)
+                    {{#if IsForeignKey}}
+   					if (this._{{ForeignKey.EntityRefName}}.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
@@ -67,7 +66,7 @@
         
     {{/each}}
     {{#each EntityRefs}}
-        [global::System.Data.Linq.Mapping.AssociationAttribute(Name="{{ForeignKeyName}}", Storage="_{{EntityRefName}}", ThisKey="{{KeyColumn.ColumnName}}", OtherKey="{{ReferencedColumn.ColumnName}}", IsForeignKey=true, DeleteOnNull=xxx)]
+        [global::System.Data.Linq.Mapping.AssociationAttribute(Name="{{ForeignKeyName}}", Storage="_{{EntityRefName}}", ThisKey="{{KeyColumn.ColumnName}}", OtherKey="{{ReferencedColumn.ColumnName}}", IsForeignKey=true, DeleteOnNull={{DeleteOnNull}})]
 		public {{ReferencedColumn.Table.ClassName}} {{EntityRefName}}
 		{
 			get

@@ -19,7 +19,9 @@ namespace SqlPlastic
 
             string dcTemplate = File.ReadAllText(".\\Templates\\dataclasses.handlebars");
 
-            Handlebars.Configuration.TextEncoder = new NoTxtEncoder();
+            Handlebars.Configuration.TextEncoder = new NoTxtEncoder();  // Don't HTML encode {{ ... }} values, since we're not generating HTML
+
+            Handlebars.Configuration.ThrowOnUnresolvedBindingExpression = true;
 
             Handlebars.RegisterTemplate("table", tblTemplate);
 
