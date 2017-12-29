@@ -8,6 +8,16 @@ namespace SqlPlastic
 {
     public class ModelBuilder
     {
+        AssociationBuilder AssBuilder;
+        PlasticConfig Config;
+
+        public ModelBuilder(PlasticConfig config )
+        {
+            Config = config;
+
+            AssBuilder = new AssociationBuilder(config);
+        }
+
         public DataClassesModel BuildModel(string dbName, string nsname, string contextName, ColumnDescriptor[] columnDescriptors, PrimaryKeyDescriptor[] pks, ForeignKeyDescriptor[] fks)
         {
             return new DataClassesModel
@@ -59,13 +69,13 @@ namespace SqlPlastic
             }
 
             // Lay in the EntityRef and EntitySet foreign key association properties (the "." properties)
-            AssociationBuilder.AddAssociationProperties(tables, fks);
+            AssBuilder.AddAssociationProperties(tables, fks);
 
             return tables.OrderBy(x => x.SchemaName).ThenBy(x => x.TableName).ToArray();
         }
 
 
-        private static Column BuildColumn(int tableObjectID, ColumnDescriptor c, PrimaryKeyDescriptor[] pks, bool tableHasVersion)
+        private Column BuildColumn(int tableObjectID, ColumnDescriptor c, PrimaryKeyDescriptor[] pks, bool tableHasVersion)
         {
             string memberName = c.ColumnName;
             string memberType = TypeMapper.MapDBType(c);

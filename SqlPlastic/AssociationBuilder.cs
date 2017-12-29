@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace SqlPlastic
 {
-    static class AssociationBuilder
+    class AssociationBuilder
     {
-        static Dictionary<int, HashSet<string>> tablePropertyNames = new Dictionary<int, HashSet<string>>();
+        PlasticConfig Config;
 
-        public static void AddAssociationProperties( IEnumerable<Table> tables, IEnumerable<ForeignKeyDescriptor> fkds )
+        Dictionary<int, HashSet<string>> tablePropertyNames = new Dictionary<int, HashSet<string>>();
+
+        public AssociationBuilder( PlasticConfig config )
+        {
+            Config = config;
+        }
+
+        public void AddAssociationProperties( IEnumerable<Table> tables, IEnumerable<ForeignKeyDescriptor> fkds )
         {
             var colDict = tables.SelectMany(x => x.Columns).ToDictionary(x => x.ColumnUID);
 
@@ -23,7 +30,7 @@ namespace SqlPlastic
             }
         }
 
-        private static void AddAssociationPropsForKey(ForeignKeyDescriptor fkd, Column c1, Column c2)
+        private void AddAssociationPropsForKey(ForeignKeyDescriptor fkd, Column c1, Column c2)
         {
             //  Table 1                  Table 2
             //  dbo.Orders               dbo.Customers
@@ -35,13 +42,14 @@ namespace SqlPlastic
 
             Table t1 = c1.Table, t2 = c2.Table;
 
+            // Generate property names
+            FkProps fkProps = GenerateProps(t1, t2, fkd);
+
             // --- Add an EntityRef from c1 ---> c2
-            string refName = Inflector.Singularize(t2.TableName);      // #TODO - Mapper!!! PropertyName from TableName
-            refName = GeneratePropertyName(t1, refName );
 
             var eref = new EntityRefModel
             {
-                EntityRefName = refName,
+                EntityRefName = fkProps.entityRefName,
                 KeyColumn = c1,                 // T1 is the *ref*
                 ReferencedColumn = c2,          // T2 is the *set*
 
@@ -56,7 +64,7 @@ namespace SqlPlastic
 
             var eset = new EntitySetModel
             {
-                EntitySetName = setName,
+                EntitySetName = fkProps.entitySetName,
                 KeyColumn = c2,                 // T2 is the *set*
                 ReferencedColumn = c1,          // T1 is the *ref*
 
@@ -76,8 +84,56 @@ namespace SqlPlastic
             t2.EntitySets.Add(eset);
         }
 
+        class FkProps
+        {
+            public string entityRefName { get; set; }
+            public string entitySetName { get; set; }
+        }
 
-        private static string GeneratePropertyName(Table tbl, string baseName)
+        FkProps GenerateProps(Table t1, Table t2, ForeignKeyDescriptor fkd)
+        {
+            // lookup any table-specific mapping rules
+            TableMappingRules mappingRules = new TableMappingRules();
+
+            string fullTableName = t1.SchemaName + "." + t1.TableName;      // Foreign keys are "owned" by table 1
+            if (Config.MappingRules.TryGetValue(fullTableName, out TableMappingRules mr))
+                mappingRules = mr;
+
+            var fkm = mappingRules.foreignKeys.FirstOrDefault(x => x.foreignKeyName == fkd.ForeignKeyName);
+
+            string entityRefName, entitySetName;
+
+            // --- Entity Ref Name
+            if( string.IsNullOrEmpty(fkm?.entityRefName) )
+            {
+                string refName = Inflector.Singularize(t2.TableName);      // #TODO - Mapper!!! PropertyName from TableName
+                entityRefName = GeneratePropertyName(t1, refName);
+            }
+            else
+            {
+                entityRefName = fkm.entityRefName;
+            }
+
+            // --- Entity Set Name
+            if (string.IsNullOrEmpty(fkm?.entitySetName))
+            {
+                string setName = Inflector.Singularize(t2.TableName);      // #TODO - Mapper!!! PropertyName from TableName
+                entitySetName = GeneratePropertyName(t1, setName);
+            }
+            else
+            {
+                entitySetName = fkm.entitySetName;
+            }
+
+            return new FkProps
+            {
+                entityRefName = entityRefName,
+                entitySetName = entitySetName
+            };
+        }
+
+
+        string GeneratePropertyName(Table tbl, string baseName)
         {
             // Lazy initialize the dictionary of HashSets
             if( tablePropertyNames.TryGetValue(tbl.TableObjectID, out HashSet<string> propNames) == false )
@@ -86,7 +142,10 @@ namespace SqlPlastic
                 tablePropertyNames.Add(tbl.TableObjectID, propNames);
             }
 
-            // First check the basename
+            // First check any user-specified mapping rules
+
+
+            // Next check the basename -- if it doesn't exist, then use it
             if (propNames.Contains(baseName) == false)
             {
                 propNames.Add(baseName);

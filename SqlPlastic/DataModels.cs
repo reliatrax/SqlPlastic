@@ -88,4 +88,5 @@ namespace SqlPlastic
         public string ForeignKeyName { get; set; }
         public string DeleteRule { get; set; }
     }
+
 }

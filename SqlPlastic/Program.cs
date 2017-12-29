@@ -12,15 +12,16 @@ namespace SqlPlastic
     {
         static void Main(string[] args)
         {
-            string dbname = null, server = null, contextName = null, outputFileName = null, gennamespace = null;
+            string dbname = null, server = ".\\SQLEXPRESS", contextName = null, outputFileName = null, gennamespace = null, jsonFileName = null;
 
             // thses are the available options, not that they set the variables
             var options = new OptionSet {
-                { "server=", "the number of times to repeat the greeting.", s => server = s },
-                { "database=", "the name of someone to greet.", d => dbname = d },
-                { "context=", "the name of someone to greet.", c => contextName = c },
-                { "code=", "the name of someone to greet.", c => outputFileName = c },
+                { "server=", "The name of the SQL Server (eg. \".\\SQLEXPRESS\")", s => server = s },
+                { "database=", "The name of the database to generate Linq-to-SQL classes for", d => dbname = d },
+                { "context=", "the name of the generated context", c => contextName = c },
+                { "code=", "the output file name", c => outputFileName = c },
                 { "namespace=", "the namespace for the generated context class", n => gennamespace = n },
+                { "config=", "filename for the JSON configuration file (optional)", n => jsonFileName = n },
             };
 
             List<string> extra;
@@ -36,14 +37,22 @@ namespace SqlPlastic
                 return;
             }
 
-            var colDescriptors = Querries.ListColumns();
+            // Read the JSON configuration file (if there is one)
+            PlasticConfig plastic = new PlasticConfig();
 
+            if (jsonFileName != null)
+                plastic.ReadJsonConfig(jsonFileName);
+
+            // Query the database meta-data
+            var colDescriptors = Querries.ListColumns();
             var primaryKeys = Querries.ListPrimaryKeys();
             var foreignKeys = Querries.ListForeignKeys();
 
-            ModelBuilder mb = new ModelBuilder();
+            // Build up a DOM model of the database and its relationships
+            ModelBuilder mb = new ModelBuilder(plastic);
             var model = mb.BuildModel(dbname, gennamespace, contextName, colDescriptors, primaryKeys, foreignKeys);
 
+            // Generate the output code from the model
             CodeGenerator cg = new CodeGenerator();
             cg.CompileTemplates();
             string output = cg.RenderDataClasses(model);
