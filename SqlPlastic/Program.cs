@@ -44,9 +44,9 @@ namespace SqlPlastic
                 plastic.ReadJsonConfig(jsonFileName);
 
             // Query the database meta-data
-            var colDescriptors = Querries.ListColumns();
-            var primaryKeys = Querries.ListPrimaryKeys();
-            var foreignKeys = Querries.ListForeignKeys();
+            var colDescriptors = QuerryRunner.ListColumns();
+            var primaryKeys = QuerryRunner.ListPrimaryKeys();
+            var foreignKeys = QuerryRunner.ListForeignKeys();
 
             // Build up a DOM model of the database and its relationships
             ModelBuilder mb = new ModelBuilder(plastic);

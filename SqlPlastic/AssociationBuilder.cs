@@ -46,7 +46,6 @@ namespace SqlPlastic
             FkProps fkProps = GenerateProps(t1, t2, fkd);
 
             // --- Add an EntityRef from c1 ---> c2
-
             var eref = new EntityRefModel
             {
                 EntityRefName = fkProps.entityRefName,
@@ -59,9 +58,6 @@ namespace SqlPlastic
             };
 
             // --- Add an EntitySet from c1 <-- c2
-            string setName = t1.TableName;      // #TODO - Mapper!!! PropertyName from TableName
-            setName = GeneratePropertyName(t2, setName );
-
             var eset = new EntitySetModel
             {
                 EntitySetName = fkProps.entitySetName,
@@ -106,7 +102,7 @@ namespace SqlPlastic
             // --- Entity Ref Name
             if( string.IsNullOrEmpty(fkm?.entityRefName) )
             {
-                string refName = Inflector.Singularize(t2.TableName);      // #TODO - Mapper!!! PropertyName from TableName
+                string refName = ModelBuilder.GenerateClassName(t2.TableName);
                 entityRefName = GeneratePropertyName(t1, refName);
             }
             else
@@ -117,8 +113,8 @@ namespace SqlPlastic
             // --- Entity Set Name
             if (string.IsNullOrEmpty(fkm?.entitySetName))
             {
-                string setName = Inflector.Singularize(t2.TableName);      // #TODO - Mapper!!! PropertyName from TableName
-                entitySetName = GeneratePropertyName(t1, setName);
+                string setName = ModelBuilder.GenerateClassName(t1.TableName);
+                entitySetName = GeneratePropertyName(t2, setName);
             }
             else
             {
@@ -154,7 +150,7 @@ namespace SqlPlastic
 
             // This would be a great place for an extension point.  Maybe a text file list of table / property names?
 
-            for (int i = 0; i < 10; ++i)
+            for (int i = 1; i < 10; ++i)
             {
                 string name = baseName + i.ToString();
                 if (propNames.Contains(name) == false)

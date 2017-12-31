@@ -53,10 +53,10 @@ namespace SqlPlastic
         public int ReferencedColumnID { get; set; }
     }
 
-    static class Querries
+    static class QuerryRunner
     {
-        //static string dbname = "NEWVERSIONDB";
-        static string dbname = "SqlPlasticTestDB";
+        static string dbname = "NEWVERSIONDB";
+        //static string dbname = "SqlPlasticTestDB";
 
         public static ColumnDescriptor[] ListColumns()
         {

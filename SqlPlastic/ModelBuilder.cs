@@ -44,7 +44,7 @@ namespace SqlPlastic
                 string tableName = cbt.First().TableName;
                 string schemaName = cbt.First().SchemaName;
                 int tableID = cbt.First().ObjectID;
-                string className = Inflector.Singularize(tableName);
+                string className = GenerateClassName(tableName);
                 bool tableHasVersion = cbt.Any(x => x.IsVersion);
 
                 PrimaryKeyDescriptor[] tblPKs = pksByTableID[tableID].ToArray();        // primary keys for this table
@@ -74,6 +74,13 @@ namespace SqlPlastic
             return tables.OrderBy(x => x.SchemaName).ThenBy(x => x.TableName).ToArray();
         }
 
+        //# todo - move this somewhere!!!
+        //# todo - allow mapping from JSON config file
+        public static string GenerateClassName( string tableName )
+        {
+            string className = Inflector.Singularize(tableName);
+            return className;
+        }
 
         private Column BuildColumn(int tableObjectID, ColumnDescriptor c, PrimaryKeyDescriptor[] pks, bool tableHasVersion)
         {
