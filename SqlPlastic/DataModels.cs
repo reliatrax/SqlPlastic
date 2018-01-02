@@ -13,6 +13,7 @@ namespace SqlPlastic
 
         public Table[] Tables { get; set; }
         public string NameSpace { get; internal set; }
+        public string ToolVersion { get; internal set; }
     }
 
     public class Table

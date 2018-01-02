@@ -56,7 +56,6 @@ namespace SqlPlastic
     static class QuerryRunner
     {
         static string dbname = "NEWVERSIONDB";
-        //static string dbname = "SqlPlasticTestDB";
 
         public static ColumnDescriptor[] ListColumns()
         {

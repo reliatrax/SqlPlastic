@@ -13,11 +13,11 @@ namespace SqlPlastic
     {
         Func<DataClassesModel, string> renderer;
 
-        public void CompileTemplates()
+        public void CompileTemplates(string templatePath)
         {
-            string tblTemplate = File.ReadAllText(".\\Templates\\table.handlebars");
+            string tblTemplate = File.ReadAllText(Path.Combine(templatePath,"table.handlebars"));
 
-            string dcTemplate = File.ReadAllText(".\\Templates\\dataclasses.handlebars");
+            string dcTemplate = File.ReadAllText(Path.Combine(templatePath,"dataclasses.handlebars"));
 
             Handlebars.Configuration.TextEncoder = new NoTxtEncoder();  // Don't HTML encode {{ ... }} values, since we're not generating HTML
 

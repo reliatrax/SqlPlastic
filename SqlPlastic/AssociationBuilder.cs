@@ -113,7 +113,8 @@ namespace SqlPlastic
             // --- Entity Set Name
             if (string.IsNullOrEmpty(fkm?.entitySetName))
             {
-                string setName = ModelBuilder.GenerateClassName(t1.TableName);
+                string className = ModelBuilder.GenerateClassName(t1.TableName);
+                string setName = Inflector.Pluralize(className);        // the set name should be plural
                 entitySetName = GeneratePropertyName(t2, setName);
             }
             else
@@ -135,6 +136,7 @@ namespace SqlPlastic
             if( tablePropertyNames.TryGetValue(tbl.TableObjectID, out HashSet<string> propNames) == false )
             {
                 propNames = new HashSet<string>(tbl.Columns.Select(x => x.MemberName));
+                propNames.Add(tbl.ClassName);       // Add the classname itself, since classes cannot have a property name the same as the enclosing class name
                 tablePropertyNames.Add(tbl.TableObjectID, propNames);
             }
 

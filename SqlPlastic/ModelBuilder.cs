@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,20 +9,21 @@ namespace SqlPlastic
 {
     public class ModelBuilder
     {
-        AssociationBuilder AssBuilder;
+        AssociationBuilder AssocBuilder;
         PlasticConfig Config;
 
         public ModelBuilder(PlasticConfig config )
         {
             Config = config;
 
-            AssBuilder = new AssociationBuilder(config);
+            AssocBuilder = new AssociationBuilder(config);
         }
 
         public DataClassesModel BuildModel(string dbName, string nsname, string contextName, ColumnDescriptor[] columnDescriptors, PrimaryKeyDescriptor[] pks, ForeignKeyDescriptor[] fks)
         {
             return new DataClassesModel
             {
+                ToolVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
                 DatabaseName = dbName,
                 NameSpace = nsname,
                 ContextName = contextName,
@@ -69,7 +71,7 @@ namespace SqlPlastic
             }
 
             // Lay in the EntityRef and EntitySet foreign key association properties (the "." properties)
-            AssBuilder.AddAssociationProperties(tables, fks);
+            AssocBuilder.AddAssociationProperties(tables, fks);
 
             return tables.OrderBy(x => x.SchemaName).ThenBy(x => x.TableName).ToArray();
         }

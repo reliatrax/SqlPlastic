@@ -53,8 +53,10 @@ namespace SqlPlastic
             var model = mb.BuildModel(dbname, gennamespace, contextName, colDescriptors, primaryKeys, foreignKeys);
 
             // Generate the output code from the model
+            string exePath = Path.GetDirectoryName(AppDomain.CurrentDomain.BaseDirectory);
+            string templatePath = Path.Combine(exePath, "Templates");
             CodeGenerator cg = new CodeGenerator();
-            cg.CompileTemplates();
+            cg.CompileTemplates(templatePath);
             string output = cg.RenderDataClasses(model);
 
             File.WriteAllText(outputFileName, output);
