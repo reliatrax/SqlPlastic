@@ -19,15 +19,15 @@ namespace SqlPlastic
             AssocBuilder = new AssociationBuilder(config);
         }
 
-        public DataClassesModel BuildModel(string dbName, string nsname, string contextName, ColumnDescriptor[] columnDescriptors, PrimaryKeyDescriptor[] pks, ForeignKeyDescriptor[] fks)
+        public DataClassesModel BuildModel(DbMetaData meta)
         {
             return new DataClassesModel
             {
                 ToolVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString(),
-                DatabaseName = dbName,
-                NameSpace = nsname,
-                ContextName = contextName,
-                Tables = BuildTables(columnDescriptors, pks, fks)
+                DatabaseName = meta.DBName,
+                NameSpace = Config.Options.NameSpace,
+                ContextName = Config.Options.DataContextName,
+                Tables = BuildTables(meta.Columns, meta.PrimaryKeys, meta.ForeignKeys)
             };
         }
 

@@ -55,6 +55,7 @@
     <Compile Include="AssociationBuilder.cs" />
     <Compile Include="CodeGenerator.cs" />
     <Compile Include="DataModels.cs" />
+    <Compile Include="DbMetaData.cs" />
     <Compile Include="Inflector.cs" />
     <Compile Include="ModelBuilder.cs" />
     <Compile Include="Models\Generated\Database.cs">
@@ -76,10 +77,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\Generated\Database.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Database.cs</LastGenOutput>
-    </Content>
     <None Include="Templates\dataclasses.handlebars">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -89,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\Generated\Database.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Database.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

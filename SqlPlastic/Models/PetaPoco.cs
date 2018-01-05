@@ -2,7 +2,7 @@
 //      Apache License, Version 2.0 https://github.com/CollaboratingPlatypus/PetaPoco/blob/master/LICENSE.txt
 // </copyright>
 // <author>PetaPoco - CollaboratingPlatypus</author>
-// <date>2017/11/29</date>
+// <date>2017/12/13</date>
 
 // --------------------------WARNING--------------------------------
 // -----------------------------------------------------------------
@@ -4737,16 +4737,22 @@ namespace PetaPoco
             };
             FromDbConverter = (pi, t) =>
             {
-                var valueConverter = pi.GetCustomAttributes(typeof(ValueConverterAttribute), true).FirstOrDefault() as ValueConverterAttribute;
-                if (valueConverter != null)
-                    return valueConverter.ConvertFromDb;
+                if (pi != null)
+                {
+                    var valueConverter = pi.GetCustomAttributes(typeof(ValueConverterAttribute), true).FirstOrDefault() as ValueConverterAttribute;
+                    if (valueConverter != null)
+                        return valueConverter.ConvertFromDb;
+                }
                 return null;
             };
             ToDbConverter = (pi) =>
             {
-                var valueConverter = pi.GetCustomAttributes(typeof(ValueConverterAttribute), true).FirstOrDefault() as ValueConverterAttribute;
-                if (valueConverter != null)
-                    return valueConverter.ConvertToDb;
+                if (pi != null)
+                {
+                    var valueConverter = pi.GetCustomAttributes(typeof(ValueConverterAttribute), true).FirstOrDefault() as ValueConverterAttribute;
+                    if (valueConverter != null)
+                        return valueConverter.ConvertToDb;
+                }
                 return null;
             };
         }

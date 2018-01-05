@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,15 @@ namespace SqlPlastic
 {
     public class ConfigRoot
     {
-        public TableMappingRules[] mappingRules { get; set; }
+        public OuputOptions OutputOptions {get; set;} 
+
+        public TableMappingRules[] MappingRules { get; set; }
+    }
+
+    public class OuputOptions
+    {
+        public string NameSpace { get; internal set; }
+        public string DataContextName { get; internal set; }
     }
 
     public class TableMappingRules
@@ -18,31 +27,47 @@ namespace SqlPlastic
         /// <summary>
         /// Complete table name including the schema (e.g. "dbo.Products")
         /// </summary>
-        public string tableName { get; set; }
-        public ForeignKeyRuleMapping[] foreignKeys { get; set; }
+        public string TableName { get; set; }
+        public ForeignKeyRuleMapping[] ForeignKeys { get; set; }
 
         public TableMappingRules()
         {
-            tableName = "";
-            foreignKeys = new ForeignKeyRuleMapping[0];
+            TableName = "";
+            ForeignKeys = new ForeignKeyRuleMapping[0];
         }
     }
 
     public class ForeignKeyRuleMapping
     {
-        public string foreignKeyName { get; set; }
-        public string entityRefName { get; set; }
-        public string entitySetName { get; set; }
-        public bool deleteOnNull { get; set; }
+        public string ForeignKeyName { get; set; }
+        public string EntityRefName { get; set; }
+        public string EntitySetName { get; set; }
+        public bool DeleteOnNull { get; set; }
     }
 
     public class PlasticConfig
     {
+        public OuputOptions Options;
+
         public Dictionary<string, TableMappingRules> MappingRules;
 
         public PlasticConfig()
         {
             MappingRules = new Dictionary<string, TableMappingRules>();
+
+            SetDefaultOptions();
+        }
+
+        private void SetDefaultOptions()
+        {
+            // Provide some default options
+            Options = Options ?? new OuputOptions();
+
+            if (string.IsNullOrEmpty(Options.DataContextName))
+                Options.DataContextName = "MyDataContext";
+
+            if (string.IsNullOrEmpty(Options.NameSpace))
+                Options.NameSpace = "MyDataModels";
         }
 
         public void ReadJsonConfig( string fileName )
@@ -51,8 +76,10 @@ namespace SqlPlastic
 
             ConfigRoot config = JsonConvert.DeserializeObject<ConfigRoot>(json);
 
-            MappingRules = config.mappingRules.ToDictionary(x => x.tableName, StringComparer.InvariantCultureIgnoreCase);
-        }
+            MappingRules = config.MappingRules.ToDictionary(x => x.TableName, StringComparer.InvariantCultureIgnoreCase);
 
+            // Set default values after reading
+            SetDefaultOptions();
+        }
     }
 }

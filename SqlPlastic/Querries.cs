@@ -7,59 +7,9 @@ using PetaPoco;
 
 namespace SqlPlastic
 {
-    public class ColumnDescriptor
+    public static class QuerryRunner
     {
-        public string TableName { get; set; }
-        public string SchemaName { get; set; }
-        public int ObjectID { get; set; }
-        public int ColumnID { get; set; }
-        public string ColumnName { get; set; }
-        public string DataType { get; set; }
-        public int MaxLength { get; set; }
-        public int Precision { get; set; }
-        public int Scale { get; set; }
-        public bool IsNullable { get; set; }
-        public bool IsIdentity { get; set; }
-        public bool IsComputed { get; set; }
-
-        public bool IsVersion => DataType.ToUpper() == "TIMESTAMP";
-
-        public bool IsDbGenerated => IsComputed || IsIdentity || IsVersion;
-    }
-
-    public class PrimaryKeyDescriptor
-    {
-        public string PrimaryKeyName { get; set; }
-        public string TableName { get; set; }
-        public string ColumnName { get; set; }
-        public int TableObjectID { get; set; }
-        public int ColumnID { get; set; }
-    }
-
-    public class ForeignKeyDescriptor
-    {
-        public string ForeignKeyName { get; set; }
-        public string OnDelete { get; set; }
-        public string OnUpdate { get; set; }
-
-        public string ParentTableName { get; set; }
-        public string ParentColumnName { get; set; }
-        public int ParentObjectID { get; set; }
-        public int ParentColumnID { get; set; }
-
-        public string ReferencedTableName { get; set; }
-        public string ReferencedColumnName { get; set; }
-        public int ReferencedObjectID { get; set; }
-        public int ReferencedColumnID { get; set; }
-    }
-
-    static class QuerryRunner
-    {
-        static string dbname = "NEWVERSIONDB";
-
-        public static ColumnDescriptor[] ListColumns()
-        {
-            string query = @"
+        const string columnQuery = @"
                             SELECT
                                 tbl.name as TableName,
                                 SCHEMA_NAME(tbl.schema_id) as SchemaName,
@@ -81,17 +31,7 @@ namespace SqlPlastic
                                 sys.types as t ON c.user_type_id = t.user_type_id
                             ";
 
-            using (var dc = new PetaPoco.Database(String.Format(@"Data Source =.\sqlexpress; Integrated Security = SSPI; DataBase = {0}", dbname), providerName: "SqlServer"))
-            {
-                ColumnDescriptor[] cols = dc.Query<ColumnDescriptor>(query).ToArray();
-                return cols;
-            }
-        }
-
-
-        public static PrimaryKeyDescriptor[] ListPrimaryKeys()
-        {
-            string query = @"
+        const string primaryKeyQuery = @"
                             SELECT  i.name AS IndexName,
                                     ic.object_id As TableObjectID,
                                     ic.column_id as ColumnID,
@@ -103,18 +43,8 @@ namespace SqlPlastic
                             ORDER BY OBJECT_NAME(ic.OBJECT_ID)
                             ";
 
-            using (var dc = new PetaPoco.Database(String.Format(@"Data Source =.\sqlexpress; Integrated Security = SSPI; DataBase = {0}", dbname), providerName: "SqlServer"))
-            {
-                PrimaryKeyDescriptor[] pks = dc.Query<PrimaryKeyDescriptor>(query).ToArray();
-                return pks;
-            }
-        }
-
-        public static ForeignKeyDescriptor[] ListForeignKeys()
-        {
-            // note select *distinct* because the join result in duplicate entries
-            string query = @"
-                        SELECT distinct
+        const string foreignKeyQuery = @"
+                        SELECT 
                             f.name AS ForeignKeyName, 
                             fc.parent_object_id as ParentObjectID,
                             fc.parent_column_id as ParentColumnID,
@@ -132,11 +62,29 @@ namespace SqlPlastic
                         ON f.OBJECT_ID = fc.constraint_object_id
                             ";
 
-            using (var dc = new PetaPoco.Database(String.Format(@"Data Source =.\sqlexpress; Integrated Security = SSPI; DataBase = {0}", dbname), providerName: "SqlServer"))
+
+        public static DbMetaData QueryDbMetaData(string dbName, string constring)
+        {
+            ColumnDescriptor[] cols;
+            PrimaryKeyDescriptor[] pks;
+            ForeignKeyDescriptor[] fks;
+
+            using (var dc = new PetaPoco.Database(constring, providerName: "SqlServer"))
             {
-                ForeignKeyDescriptor[] fks = dc.Query<ForeignKeyDescriptor>(query).ToArray();
-                return fks;
+                cols = dc.Query<ColumnDescriptor>(columnQuery).ToArray();
+
+                pks = dc.Query<PrimaryKeyDescriptor>(primaryKeyQuery).ToArray();
+
+                fks = dc.Query<ForeignKeyDescriptor>(foreignKeyQuery).ToArray();
             }
+
+            return new DbMetaData
+            {
+                DBName = dbName,
+                Columns = cols,
+                PrimaryKeys = pks,
+                ForeignKeys = fks
+            };
         }
     }
 }

@@ -95,23 +95,23 @@ namespace SqlPlastic
             if (Config.MappingRules.TryGetValue(fullTableName, out TableMappingRules mr))
                 mappingRules = mr;
 
-            var fkm = mappingRules.foreignKeys.FirstOrDefault(x => x.foreignKeyName == fkd.ForeignKeyName);
+            var fkm = mappingRules.ForeignKeys.FirstOrDefault(x => x.ForeignKeyName == fkd.ForeignKeyName);
 
             string entityRefName, entitySetName;
 
             // --- Entity Ref Name
-            if( string.IsNullOrEmpty(fkm?.entityRefName) )
+            if( string.IsNullOrEmpty(fkm?.EntityRefName) )
             {
                 string refName = ModelBuilder.GenerateClassName(t2.TableName);
                 entityRefName = GeneratePropertyName(t1, refName);
             }
             else
             {
-                entityRefName = fkm.entityRefName;
+                entityRefName = fkm.EntityRefName;
             }
 
             // --- Entity Set Name
-            if (string.IsNullOrEmpty(fkm?.entitySetName))
+            if (string.IsNullOrEmpty(fkm?.EntitySetName))
             {
                 string className = ModelBuilder.GenerateClassName(t1.TableName);
                 string setName = Inflector.Pluralize(className);        // the set name should be plural
@@ -119,7 +119,7 @@ namespace SqlPlastic
             }
             else
             {
-                entitySetName = fkm.entitySetName;
+                entitySetName = fkm.EntitySetName;
             }
 
             return new FkProps
