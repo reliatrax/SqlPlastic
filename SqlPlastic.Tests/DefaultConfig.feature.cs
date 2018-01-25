@@ -210,7 +210,7 @@ this.ScenarioSetup(scenarioInfo);
                         "0"});
             table2.AddRow(new string[] {
                         "Employees",
-                        "3",
+                        "4",
                         "1",
                         "1"});
             table2.AddRow(new string[] {
@@ -359,10 +359,10 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Column Attributes")]
-        public virtual void ColumnAttributes()
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 1 - Primary Key with Identity")]
+        public virtual void ColumnAttributes1_PrimaryKeyWithIdentity()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 1 - Primary Key with Identity", ((string[])(null)));
 #line 78
 this.ScenarioSetup(scenarioInfo);
 #line 79
@@ -375,28 +375,189 @@ this.ScenarioSetup(scenarioInfo);
                         "AttributeValue"});
             table6.AddRow(new string[] {
                         "Storage",
-                        "\"_MyTimeStamp\""});
+                        "\"_CustomerID\""});
             table6.AddRow(new string[] {
                         "AutoSync",
-                        "AutoSync.Always"});
+                        "AutoSync.OnInsert"});
             table6.AddRow(new string[] {
                         "DbType",
-                        "\"rowversion NOT NULL\""});
+                        "\"Int NOT NULL IDENTITY\""});
             table6.AddRow(new string[] {
-                        "CanBeNull",
-                        "false"});
+                        "IsPrimaryKey",
+                        "true"});
             table6.AddRow(new string[] {
                         "IsDbGenerated",
                         "true"});
-            table6.AddRow(new string[] {
-                        "IsVersion",
+#line 81
+ testRunner.Then("the column \"dbo.Customers.CustomerID\" should have the following Column Attributes" +
+                    "", ((string)(null)), table6, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 2 - Primary Key no Identity, table has TIMESTAMP")]
+        public virtual void ColumnAttributes2_PrimaryKeyNoIdentityTableHasTIMESTAMP()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 2 - Primary Key no Identity, table has TIMESTAMP", ((string[])(null)));
+#line 89
+this.ScenarioSetup(scenarioInfo);
+#line 90
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 91
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AttributeName",
+                        "AttributeValue"});
+            table7.AddRow(new string[] {
+                        "Storage",
+                        "\"_MyDataTypeID\""});
+            table7.AddRow(new string[] {
+                        "DbType",
+                        "\"Int NOT NULL\""});
+            table7.AddRow(new string[] {
+                        "IsPrimaryKey",
                         "true"});
-            table6.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "UpdateCheck",
                         "UpdateCheck.Never"});
-#line 81
+#line 92
+ testRunner.Then("the column \"dbo.MyDataTypes.MyDataTypeID\" should have the following Column Attrib" +
+                    "utes", ((string)(null)), table7, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 3 - TimeStamp")]
+        public virtual void ColumnAttributes3_TimeStamp()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 3 - TimeStamp", ((string[])(null)));
+#line 99
+this.ScenarioSetup(scenarioInfo);
+#line 100
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 101
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AttributeName",
+                        "AttributeValue"});
+            table8.AddRow(new string[] {
+                        "Storage",
+                        "\"_MyTimeStamp\""});
+            table8.AddRow(new string[] {
+                        "AutoSync",
+                        "AutoSync.Always"});
+            table8.AddRow(new string[] {
+                        "DbType",
+                        "\"rowversion NOT NULL\""});
+            table8.AddRow(new string[] {
+                        "CanBeNull",
+                        "false"});
+            table8.AddRow(new string[] {
+                        "IsDbGenerated",
+                        "true"});
+            table8.AddRow(new string[] {
+                        "IsVersion",
+                        "true"});
+            table8.AddRow(new string[] {
+                        "UpdateCheck",
+                        "UpdateCheck.Never"});
+#line 102
  testRunner.Then("the column \"dbo.MyDataTypes.MyTimeStamp\" should have the following Column Attribu" +
-                    "tes", ((string)(null)), table6, "Then ");
+                    "tes", ((string)(null)), table8, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 4 - Nullable int column")]
+        public virtual void ColumnAttributes4_NullableIntColumn()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 4 - Nullable int column", ((string[])(null)));
+#line 112
+this.ScenarioSetup(scenarioInfo);
+#line 113
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 114
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AttributeName",
+                        "AttributeValue"});
+            table9.AddRow(new string[] {
+                        "Storage",
+                        "\"_ManagerEmployeeID\""});
+            table9.AddRow(new string[] {
+                        "DbType",
+                        "\"Int\""});
+#line 115
+ testRunner.Then("the column \"dbo.Employees.ManagerEmployeeID\" should have the following Column Att" +
+                    "ributes", ((string)(null)), table9, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 5 - Nullable VARCHAR")]
+        public virtual void ColumnAttributes5_NullableVARCHAR()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 5 - Nullable VARCHAR", ((string[])(null)));
+#line 120
+this.ScenarioSetup(scenarioInfo);
+#line 121
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 122
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AttributeName",
+                        "AttributeValue"});
+            table10.AddRow(new string[] {
+                        "Storage",
+                        "\"_EmployeeTitle\""});
+            table10.AddRow(new string[] {
+                        "DbType",
+                        "\"VarChar(200)\""});
+            table10.AddRow(new string[] {
+                        "CanBeNull",
+                        "true"});
+#line 123
+ testRunner.Then("the column \"dbo.Employees.EmployeeTitle\" should have the following Column Attribu" +
+                    "tes", ((string)(null)), table10, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Column Attributes 6 - NonNullable VARCHAR")]
+        public virtual void ColumnAttributes6_NonNullableVARCHAR()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 6 - NonNullable VARCHAR", ((string[])(null)));
+#line 129
+this.ScenarioSetup(scenarioInfo);
+#line 130
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 131
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "AttributeName",
+                        "AttributeValue"});
+            table11.AddRow(new string[] {
+                        "Storage",
+                        "\"_EmployeeName\""});
+            table11.AddRow(new string[] {
+                        "DbType",
+                        "\"VarChar(100) NOT NULL\""});
+            table11.AddRow(new string[] {
+                        "CanBeNull",
+                        "false"});
+#line 132
+ testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have the following Column Attribut" +
+                    "es", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

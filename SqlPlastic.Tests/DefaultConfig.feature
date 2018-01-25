@@ -45,7 +45,7 @@ Scenario: All tables, columns, and keys should be present
 	| Products       | 3       | 0          | 1          |
 	| Orders         | 3       | 1          | 1          |
 	| OrderLineItems | 4       | 2          | 0          |
-	| Employees      | 3       | 1          | 1          |
+	| Employees      | 4       | 1          | 1          |
 	| Preferences    | 4       | 3          | 0          |
 	| MyDataTypes    | 29      | 0          | 0          |
 
@@ -75,7 +75,28 @@ Scenario: Entity Sets 1
 		| Preferences1  | CustomerID | CustomerID_B     | Customer1     | FK_CustomerID_B | NO_ACTION  |
 		| Preferences2  | CustomerID | CustomerID_C     | Customer2     | FK_CustomerID_C | NO_ACTION  |
 
-Scenario: Column Attributes
+Scenario: Column Attributes 1 - Primary Key with Identity
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the column "dbo.Customers.CustomerID" should have the following Column Attributes
+		| AttributeName | AttributeValue          |
+		| Storage       | "_CustomerID"           |
+		| AutoSync      | AutoSync.OnInsert       |
+		| DbType        | "Int NOT NULL IDENTITY" |
+		| IsPrimaryKey  | true                    |
+		| IsDbGenerated | true                    |
+
+Scenario: Column Attributes 2 - Primary Key no Identity, table has TIMESTAMP
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the column "dbo.MyDataTypes.MyDataTypeID" should have the following Column Attributes
+		| AttributeName | AttributeValue    |
+		| Storage       | "_MyDataTypeID"   |
+		| DbType        | "Int NOT NULL"    |
+		| IsPrimaryKey  | true              |
+		| UpdateCheck   | UpdateCheck.Never |
+
+Scenario: Column Attributes 3 - TimeStamp
 	Given a connection to the "SqlPlasticTestDB" database
 	When I generate models with the default options
 	Then the column "dbo.MyDataTypes.MyTimeStamp" should have the following Column Attributes
@@ -88,3 +109,28 @@ Scenario: Column Attributes
 		| IsVersion     | true                  |
 		| UpdateCheck   | UpdateCheck.Never     |
 
+Scenario: Column Attributes 4 - Nullable int column
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the column "dbo.Employees.ManagerEmployeeID" should have the following Column Attributes
+		| AttributeName | AttributeValue       |
+		| Storage       | "_ManagerEmployeeID" |
+		| DbType        | "Int"                |
+
+Scenario: Column Attributes 5 - Nullable VARCHAR
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the column "dbo.Employees.EmployeeTitle" should have the following Column Attributes
+		| AttributeName | AttributeValue   |
+		| Storage       | "_EmployeeTitle" |
+		| DbType        | "VarChar(200)"   |
+		| CanBeNull     | true             |
+
+Scenario: Column Attributes 6 - NonNullable VARCHAR
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the column "dbo.Employees.EmployeeName" should have the following Column Attributes
+		| AttributeName | AttributeValue          |
+		| Storage       | "_EmployeeName"         |
+		| DbType        | "VarChar(100) NOT NULL" |
+		| CanBeNull     | false                   |

@@ -128,7 +128,10 @@ namespace SqlPlastic
             string dbtype = TypeMapper.BuildDBType(c);
             args.Add("DbType", $"\"{dbtype}\"");
 
-            if (c.IsNullable == td.IsValueType)
+            // I'm copying the behavior of SqlMetal here even though it doesn't really make sense to me
+            // SqlMetal only outputs this attribute for Reference types (e.g. string and binary) and outputs both true and false (even though true is the default).
+            // In particular, it does not output this attribute for nullable value types like "INT NULL".  Weird.
+            if (td.IsValueType == false)
                 args.Add("CanBeNull", $"{(c.IsNullable ?"true" :"false")}");
 
             if (isPrimaryKey)

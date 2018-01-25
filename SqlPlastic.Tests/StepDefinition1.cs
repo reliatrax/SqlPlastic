@@ -161,6 +161,9 @@ namespace SqlPlastic.Tests
 
             Column c = FindColumn(fqColumnName);
 
+            // Compare the keys (this gives much better error messages for additional / missing keys)
+            c.ColumnAttributeArgs.Keys.Should().BeEquivalentTo(expectedAttrsDict.Keys, fqColumnName);
+
             // Compare the attribute values
             c.ColumnAttributeArgs.ShouldBeEquivalentTo(expectedAttrsDict, fqColumnName);
         }

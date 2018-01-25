@@ -86,6 +86,7 @@ CREATE TABLE dbo.Employees
 (
 	EmployeeID INT IDENTITY(100,2) NOT NULL,		-- Primary key
 	EmployeeName VARCHAR(100) NOT NULL,	
+	EmployeeTitle VARCHAR(200),
 
 	ManagerEmployeeID INT NULL,					-- *nullable* Foreign key to self
 		
