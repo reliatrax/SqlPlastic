@@ -134,3 +134,25 @@ Scenario: Column Attributes 6 - NonNullable VARCHAR
 		| Storage       | "_EmployeeName"         |
 		| DbType        | "VarChar(100) NOT NULL" |
 		| CanBeNull     | false                   |
+
+
+Scenario: MaxLength Attributes 1
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the following options
+		| Field               | Value |
+		| MaxLengthAttributes | true  |
+	Then the column "dbo.Employees.EmployeeName" should have a MaxLengthAttribute of "100"
+
+Scenario: MaxLength Attributes 2
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the following options
+		| Field               | Value |
+		| MaxLengthAttributes | false |
+	Then the column "dbo.Employees.EmployeeName" should have a MaxLengthAttribute of ""
+
+Scenario: MaxLength Attributes 3
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the following options
+		| Field               | Value |
+		| MaxLengthAttributes | true |
+	Then the column "dbo.MyDataTypes.MyChar1" should have a MaxLengthAttribute of ""

@@ -11,15 +11,16 @@ namespace SqlPlastic
 {
     public class ConfigRoot
     {
-        public OuputOptions Options {get; set;} 
+        public OutputOptions Options {get; set;} 
 
         public TableMappingRules[] MappingRules { get; set; }
     }
 
-    public class OuputOptions
+    public class OutputOptions
     {
         public string NameSpace { get; set; }
         public string DataContextName { get; set; }
+        public bool MaxLengthAttributes { get; set; }
     }
 
     public class TableMappingRules
@@ -47,7 +48,7 @@ namespace SqlPlastic
 
     public class PlasticConfig
     {
-        public OuputOptions Options;
+        public OutputOptions Options;
 
         public Dictionary<string, TableMappingRules> MappingRules;
 
@@ -61,7 +62,7 @@ namespace SqlPlastic
         private void SetDefaultOptions()
         {
             // Provide some default options
-            Options = Options ?? new OuputOptions();
+            Options = Options ?? new OutputOptions();
 
             if (string.IsNullOrEmpty(Options.DataContextName))
                 Options.DataContextName = "MyDataContext";

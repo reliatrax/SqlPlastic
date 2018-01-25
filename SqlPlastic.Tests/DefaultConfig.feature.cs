@@ -561,6 +561,79 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("MaxLength Attributes 1")]
+        public virtual void MaxLengthAttributes1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 1", ((string[])(null)));
+#line 139
+this.ScenarioSetup(scenarioInfo);
+#line 140
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table12.AddRow(new string[] {
+                        "MaxLengthAttributes",
+                        "true"});
+#line 141
+ testRunner.When("I generate models with the following options", ((string)(null)), table12, "When ");
+#line 144
+ testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have a MaxLengthAttribute of \"100\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("MaxLength Attributes 2")]
+        public virtual void MaxLengthAttributes2()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 2", ((string[])(null)));
+#line 146
+this.ScenarioSetup(scenarioInfo);
+#line 147
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table13.AddRow(new string[] {
+                        "MaxLengthAttributes",
+                        "false"});
+#line 148
+ testRunner.When("I generate models with the following options", ((string)(null)), table13, "When ");
+#line 151
+ testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("MaxLength Attributes 3")]
+        public virtual void MaxLengthAttributes3()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 3", ((string[])(null)));
+#line 153
+this.ScenarioSetup(scenarioInfo);
+#line 154
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table14.AddRow(new string[] {
+                        "MaxLengthAttributes",
+                        "true"});
+#line 155
+ testRunner.When("I generate models with the following options", ((string)(null)), table14, "When ");
+#line 158
+ testRunner.Then("the column \"dbo.MyDataTypes.MyChar1\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

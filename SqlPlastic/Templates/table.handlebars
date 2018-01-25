@@ -38,6 +38,9 @@
 		}
 		
     {{#each Columns}}
+      {{#if MaxLengthAttr}}
+        [global::System.ComponentModel.DataAnnotations.MaxLength({{MaxLengthAttr}})]
+      {{/if}}
         [global::System.Data.Linq.Mapping.ColumnAttribute({{renderAttrs ColumnAttributeArgs}})]
 	    public {{MemberType}} {{MemberName}}
 		{

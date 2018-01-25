@@ -46,6 +46,7 @@ namespace SqlPlastic
         public bool IsPrimaryKey { get; set; }
         public bool IsForeignKey => ForeignKey != null;
 
+        public string MaxLengthAttr { get; set; }      // set to non-empty if we want to render a "[MaxLength]" attribute on the column
         public OrderedDictionary<string,string> ColumnAttributeArgs { get; set; }
 
         public string FullName { get; set; }
@@ -89,5 +90,4 @@ namespace SqlPlastic
         public string ForeignKeyName { get; set; }
         public string DeleteRule { get; set; }
     }
-
 }

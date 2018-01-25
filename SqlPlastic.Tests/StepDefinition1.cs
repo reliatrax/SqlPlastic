@@ -16,7 +16,7 @@ namespace SqlPlastic.Tests
         PlasticConfig config = new PlasticConfig();     // Default configuration
         DataClassesModel model;
 
-        Table FindTable( string fqTableName )
+        Table FindTable(string fqTableName)
         {
             string[] parts = fqTableName.Split('.');
 
@@ -35,7 +35,7 @@ namespace SqlPlastic.Tests
             Table tbl = FindTable(schema + "." + tableName);
             Column col = tbl.Columns.SingleOrDefault(x => x.ColumnName == columnName);
 
-            if( col == null)
+            if (col == null)
                 throw new ArgumentException($"Column '{fqColumnName}' not found");
 
             return col;
@@ -61,12 +61,12 @@ namespace SqlPlastic.Tests
             var foreignKeyMappings = tbl.CreateSetChecked<ForeignKeyMappingDescription>();
 
             var fks = foreignKeyMappings.Select(x => new ForeignKeyMappingRule
-                        {
-                            ForeignKeyName = x.ForeingKeyName,
-                            EntityRefName = x.EntityRefName,
-                            EntitySetName = x.EntitySetName,
-                            DeleteOnNull = x.DeleteOnNull
-                        }).ToArray();
+            {
+                ForeignKeyName = x.ForeingKeyName,
+                EntityRefName = x.EntityRefName,
+                EntitySetName = x.EntitySetName,
+                DeleteOnNull = x.DeleteOnNull
+            }).ToArray();
 
             TableMappingRules tmrs = new TableMappingRules
             {
@@ -83,6 +83,22 @@ namespace SqlPlastic.Tests
             // Query the database meta-data
             DbMetaData dbMetaData = QuerryRunner.QueryDbMetaData(constring);
 
+
+            // Build up a DOM model of the database and its relationships
+            ModelBuilder mb = new ModelBuilder(config);
+            model = mb.BuildModel(dbMetaData);
+        }
+
+        [When(@"I generate models with the following options")]
+        public void WhenIGenerateModelsWithTheFollowingOptions(SpecTable tbl)
+        {
+            OutputOptions opts = tbl.CreateInstanceChecked<OutputOptions>();
+
+            // Query the database meta-data
+            DbMetaData dbMetaData = QuerryRunner.QueryDbMetaData(constring);
+
+            // set the specified options
+            config.Options = opts;
 
             // Build up a DOM model of the database and its relationships
             ModelBuilder mb = new ModelBuilder(config);
@@ -149,7 +165,7 @@ namespace SqlPlastic.Tests
 
         public class AttributeDescription
         {
-		    public string AttributeName { get; set; }
+            public string AttributeName { get; set; }
             public string AttributeValue { get; set; }
         }
 
@@ -246,6 +262,14 @@ namespace SqlPlastic.Tests
                 ef.ForeignKeyName.Should().Be(expected.ForeignKeyName, because + " ForeignKeyName");
                 ef.DeleteRule.Should().Be(expected.DeleteRule, because + " DeleteRule");
             }
+        }
+
+        [Then(@"the column ""(.*)"" should have a MaxLengthAttribute of ""(.*)""")]
+        public void ThenTheColumnShouldHaveAMaxLengthAttributeOf(string fqColumnName, string expectedMaxLengthAttr)
+        {
+            Column c = FindColumn(fqColumnName);
+
+            c.MaxLengthAttr.Should().Be(expectedMaxLengthAttr);
         }
     }
 }

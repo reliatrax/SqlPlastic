@@ -84,21 +84,25 @@ namespace SqlPlastic
                 return typeMapping[dbtype];
         }
 
-        public static string MapDBType(ColumnDescriptor cd)
+        public static TypeDescriptor MapDBType(ColumnDescriptor cd)
         {
             TypeDescriptor td;
 
             string dbtype = cd.DataType.ToUpper();
 
+            // Re-map CHAR(1) and NCHAR(1) to CHAR
             if ((dbtype == "CHAR" || dbtype == "NCHAR") && cd.MaxLength == 1)
                 td = _char;
             else
                 td = typeMapping[dbtype];
 
-            if (cd.IsNullable && td.IsValueType)
-                return $"System.Nullable<{td.ClrTypeName}>";
+            string clrTypeName = td.ClrTypeName;
 
-            return td.ClrTypeName;
+            // Deal with nullable types
+            if (cd.IsNullable && td.IsValueType)
+                clrTypeName = $"System.Nullable<{td.ClrTypeName}>";
+
+            return new TypeDescriptor(clrTypeName, td.IsValueType);
         }
 
         // --- REVERSE MAPPING (CLR TO SQL) ---

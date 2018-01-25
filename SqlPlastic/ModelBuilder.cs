@@ -86,10 +86,16 @@ namespace SqlPlastic
 
         private Column BuildColumn(int tableObjectID, ColumnDescriptor c, PrimaryKeyDescriptor[] pks, bool tableHasVersion)
         {
+            TypeDescriptor td = TypeMapper.MapDBType(c);
             string memberName = c.ColumnName;
-            string memberType = TypeMapper.MapDBType(c);
+            string memberType = td.ClrTypeName;
 
             bool isPrimaryKey = pks.Any(x => x.ColumnID == c.ColumnID);
+
+            // Render MaxLength attributes for Strings and Binary if the config file tells us too
+            string maxLengthAttr = "";
+            if (Config.Options.MaxLengthAttributes && td.IsValueType == false && c.MaxLength > 0)
+                maxLengthAttr = c.MaxLength.ToString();
 
             return new Column
             {
@@ -105,6 +111,7 @@ namespace SqlPlastic
                 Precision = c.Precision,
                 Scale = c.Scale,
 
+                MaxLengthAttr = maxLengthAttr,
                 ColumnAttributeArgs = BuildColAttrArgs(c, tableHasVersion, isPrimaryKey)
             };
         }
