@@ -63,14 +63,17 @@ namespace SqlPlastic
                             ";
 
 
-        public static DbMetaData QueryDbMetaData(string dbName, string constring)
+        public static DbMetaData QueryDbMetaData(string constring)
         {
+            string dbName;
             ColumnDescriptor[] cols;
             PrimaryKeyDescriptor[] pks;
             ForeignKeyDescriptor[] fks;
 
             using (var dc = new PetaPoco.Database(constring, providerName: "SqlServer"))
             {
+                dbName = dc.Query<string>("SELECT db_name()").First();
+
                 cols = dc.Query<ColumnDescriptor>(columnQuery).ToArray();
 
                 pks = dc.Query<PrimaryKeyDescriptor>(primaryKeyQuery).ToArray();

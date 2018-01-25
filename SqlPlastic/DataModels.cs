@@ -46,7 +46,7 @@ namespace SqlPlastic
         public bool IsPrimaryKey { get; set; }
         public bool IsForeignKey => ForeignKey != null;
 
-        public string ColumnAttributeArgs { get; set; }
+        public OrderedDictionary<string,string> ColumnAttributeArgs { get; set; }
 
         public string FullName { get; set; }
         public Table Table { get; set; }

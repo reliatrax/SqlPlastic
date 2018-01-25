@@ -25,6 +25,12 @@ namespace SqlPlastic
 
             Handlebars.RegisterTemplate("table", tblTemplate);
 
+            Handlebars.RegisterHelper("renderAttrs", (writer, context, parameters) =>
+            {
+                OrderedDictionary<string,string> attrs = (OrderedDictionary<string,string>)parameters[0];
+                writer.Write(string.Join(", ", attrs.Select(x => $"{x.Key}={x.Value}")));
+            });
+
             renderer = Handlebars.Compile(dcTemplate);
         }
 

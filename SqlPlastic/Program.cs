@@ -43,7 +43,7 @@ namespace SqlPlastic
 
             // Query the database meta-data
             string constring = String.Format(@"Data Source =.\sqlexpress; Integrated Security = SSPI; DataBase = {0}", dbname);
-            DbMetaData dbMetaData = QuerryRunner.QueryDbMetaData(dbname, constring);
+            DbMetaData dbMetaData = QuerryRunner.QueryDbMetaData(constring);
 
             // Build up a DOM model of the database and its relationships
             ModelBuilder mb = new ModelBuilder(plastic);

@@ -11,15 +11,15 @@ namespace SqlPlastic
 {
     public class ConfigRoot
     {
-        public OuputOptions OutputOptions {get; set;} 
+        public OuputOptions Options {get; set;} 
 
         public TableMappingRules[] MappingRules { get; set; }
     }
 
     public class OuputOptions
     {
-        public string NameSpace { get; internal set; }
-        public string DataContextName { get; internal set; }
+        public string NameSpace { get; set; }
+        public string DataContextName { get; set; }
     }
 
     public class TableMappingRules
@@ -28,21 +28,21 @@ namespace SqlPlastic
         /// Complete table name including the schema (e.g. "dbo.Products")
         /// </summary>
         public string TableName { get; set; }
-        public ForeignKeyRuleMapping[] ForeignKeys { get; set; }
+        public ForeignKeyMappingRule[] ForeignKeys { get; set; }
 
         public TableMappingRules()
         {
             TableName = "";
-            ForeignKeys = new ForeignKeyRuleMapping[0];
+            ForeignKeys = new ForeignKeyMappingRule[0];
         }
     }
 
-    public class ForeignKeyRuleMapping
+    public class ForeignKeyMappingRule
     {
         public string ForeignKeyName { get; set; }
         public string EntityRefName { get; set; }
         public string EntitySetName { get; set; }
-        public bool DeleteOnNull { get; set; }
+        public bool? DeleteOnNull { get; set; }
     }
 
     public class PlasticConfig
@@ -76,6 +76,7 @@ namespace SqlPlastic
 
             ConfigRoot config = JsonConvert.DeserializeObject<ConfigRoot>(json);
 
+            Options = config.Options;
             MappingRules = config.MappingRules.ToDictionary(x => x.TableName, StringComparer.InvariantCultureIgnoreCase);
 
             // Set default values after reading

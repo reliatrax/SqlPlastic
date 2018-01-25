@@ -109,45 +109,44 @@ namespace SqlPlastic
             };
         }
 
-        // #TODO - refactor so that these are all properties and the arg string is set by the properties
-        private static string BuildColAttrArgs(ColumnDescriptor c, bool tableHasVersion, bool isPrimaryKey)
+        private static OrderedDictionary<string,string> BuildColAttrArgs(ColumnDescriptor c, bool tableHasVersion, bool isPrimaryKey)
         {
             // Storage="_AnsweringMachineStatID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true, UpdateCheck=UpdateCheck.Never
 
             TypeDescriptor td = TypeMapper.LookupDBType(c);
 
-            List<string> args = new List<string>();
+            OrderedDictionary<string,string> args = new OrderedDictionary<string, string>();
 
-            args.Add($"Storage=\"_{c.ColumnName}\"");       // #TODO - function to get member name from column descriptor
+            args.Add("Storage", $"\"_{c.ColumnName}\"");
 
             // Default value is Never
             if (c.IsIdentity)
-                args.Add("AutoSync=AutoSync.OnInsert");
+                args.Add("AutoSync", "AutoSync.OnInsert");
             else if (c.IsVersion)
-                args.Add("AutoSync=AutoSync.Always");
+                args.Add("AutoSync", "AutoSync.Always");
 
             string dbtype = TypeMapper.BuildDBType(c);
-            args.Add($"DbType=\"{dbtype}\"");
+            args.Add("DbType", $"\"{dbtype}\"");
 
             if (c.IsNullable == td.IsValueType)
-                args.Add($"CanBeNull={(c.IsNullable ?"true" :"false")}");
+                args.Add("CanBeNull", $"{(c.IsNullable ?"true" :"false")}");
 
             if (isPrimaryKey)
-                args.Add("IsPrimaryKey=true");
+                args.Add("IsPrimaryKey", "true");
 
             if (c.IsDbGenerated)
-                args.Add("IsDbGenerated=true");
+                args.Add("IsDbGenerated", "true");
 
             if (c.IsVersion)
-                args.Add("IsVersion=true");
+                args.Add("IsVersion", "true");
 
             // Default Value of UpdateCheck is "Always" unless a member has IsVersion==true
             // Remarks When this property is used with one of three enums, it determines how LINQ to SQL detects concurrency conflicts.
             // If no member is designed as IsVersion = true, original member values are compared with the current database state.
             if (tableHasVersion)
-                args.Add("UpdateCheck=UpdateCheck.Never");
+                args.Add("UpdateCheck", "UpdateCheck.Never");
 
-            return string.Join(", ", args);
+            return args;
         }
     }
 }

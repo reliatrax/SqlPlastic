@@ -64,6 +64,7 @@
       <DependentUpon>Database.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PetaPoco.cs" />
+    <Compile Include="OrderedDictionary.cs" />
     <Compile Include="PlasticConfig.cs" />
     <Compile Include="Querries.cs" />
     <Compile Include="Program.cs" />

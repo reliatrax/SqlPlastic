@@ -43,7 +43,7 @@ namespace SqlPlastic
             Table t1 = c1.Table, t2 = c2.Table;
 
             // Generate property names
-            FkProps fkProps = GenerateProps(t1, t2, fkd);
+            FkProps fkProps = GenerateProps(c1, t2, fkd);
 
             // --- Add an EntityRef from c1 ---> c2
             var eref = new EntityRefModel
@@ -54,7 +54,7 @@ namespace SqlPlastic
 
                 ForeignKeyName = fkd.ForeignKeyName,
                 DeleteRule = fkd.OnDelete,
-                DeleteOnNull = c1.IsNullable ?"false" :"true"   // If a non-nullable foreign key is set to null, we need to delete the associated record 
+                DeleteOnNull = fkProps.DeleteOnNull ?"true" :"false"
             };
 
             // --- Add an EntitySet from c1 <-- c2
@@ -84,12 +84,15 @@ namespace SqlPlastic
         {
             public string entityRefName { get; set; }
             public string entitySetName { get; set; }
+            public bool DeleteOnNull { get; set; }
         }
 
-        FkProps GenerateProps(Table t1, Table t2, ForeignKeyDescriptor fkd)
+        FkProps GenerateProps(Column c1, Table t2, ForeignKeyDescriptor fkd)
         {
             // lookup any table-specific mapping rules
             TableMappingRules mappingRules = new TableMappingRules();
+
+            Table t1 = c1.Table;
 
             string fullTableName = t1.SchemaName + "." + t1.TableName;      // Foreign keys are "owned" by table 1
             if (Config.MappingRules.TryGetValue(fullTableName, out TableMappingRules mr))
@@ -122,10 +125,15 @@ namespace SqlPlastic
                 entitySetName = fkm.EntitySetName;
             }
 
+            // --- Delete on Null
+            bool deleteOnNull = fkm?.DeleteOnNull ?? (c1.IsNullable == false);     // If a non-nullable foreign key is set to null, we need to delete the associated record 
+
+
             return new FkProps
             {
                 entityRefName = entityRefName,
-                entitySetName = entitySetName
+                entitySetName = entitySetName,
+                DeleteOnNull = deleteOnNull 
             };
         }
 

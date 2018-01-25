@@ -38,7 +38,7 @@
 		}
 		
     {{#each Columns}}
-        [global::System.Data.Linq.Mapping.ColumnAttribute({{ColumnAttributeArgs}})]
+        [global::System.Data.Linq.Mapping.ColumnAttribute({{renderAttrs ColumnAttributeArgs}})]
 	    public {{MemberType}} {{MemberName}}
 		{
 			get

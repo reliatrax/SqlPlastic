@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SqlPlastic.Tests</RootNamespace>
     <AssemblyName>SqlPlastic.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -55,10 +55,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Hooks1.cs" />
-    <Compile Include="ModelBuildingDefaultConfig.feature.cs">
+    <Compile Include="DefaultConfig.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ModelBuildingDefaultConfig.feature</DependentUpon>
+      <DependentUpon>DefaultConfig.feature</DependentUpon>
+    </Compile>
+    <Compile Include="MappingRules.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MappingRules.feature</DependentUpon>
     </Compile>
     <Compile Include="SpecExtensions.cs" />
     <Compile Include="StepDefinition1.cs" />
@@ -66,10 +71,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
-    <None Include="ModelBuildingDefaultConfig.feature">
+    <None Include="MappingRules.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ModelBuildingDefaultConfig.feature.cs</LastGenOutput>
+      <LastGenOutput>MappingRules.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+    <None Include="DefaultConfig.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DefaultConfig.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
