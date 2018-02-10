@@ -55,7 +55,7 @@
                     {{#if IsForeignKey}}
    					if (this._{{ForeignKey.EntityRefName}}.HasLoadedOrAssignedValue)
 					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException("{{ForeignKey.ForeignKeyName}}");
 					}
                     {{/if}}
 					this.On{{MemberName}}Changing(value);

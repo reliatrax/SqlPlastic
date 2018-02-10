@@ -634,6 +634,33 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("MaxLength Attributes 4 - Timestamp columns should not have maxlength")]
+        public virtual void MaxLengthAttributes4_TimestampColumnsShouldNotHaveMaxlength()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 4 - Timestamp columns should not have maxlength", ((string[])(null)));
+#line 160
+this.ScenarioSetup(scenarioInfo);
+#line 161
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Field",
+                        "Value"});
+            table15.AddRow(new string[] {
+                        "MaxLengthAttributes",
+                        "true"});
+#line 162
+ testRunner.When("I generate models with the following options", ((string)(null)), table15, "When ");
+#line 165
+ testRunner.Then("the column \"dbo.MyDataTypes.MyVarChar100\" should have a MaxLengthAttribute of \"10" +
+                    "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 166
+ testRunner.And("the column \"dbo.MyDataTypes.MyTimeStamp\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

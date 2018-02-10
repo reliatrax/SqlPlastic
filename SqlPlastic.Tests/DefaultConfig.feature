@@ -156,3 +156,11 @@ Scenario: MaxLength Attributes 3
 		| Field               | Value |
 		| MaxLengthAttributes | true |
 	Then the column "dbo.MyDataTypes.MyChar1" should have a MaxLengthAttribute of ""
+
+Scenario: MaxLength Attributes 4 - Timestamp columns should not have maxlength
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the following options
+		| Field               | Value |
+		| MaxLengthAttributes | true  |
+	Then the column "dbo.MyDataTypes.MyVarChar100" should have a MaxLengthAttribute of "100"
+	And the column "dbo.MyDataTypes.MyTimeStamp" should have a MaxLengthAttribute of ""

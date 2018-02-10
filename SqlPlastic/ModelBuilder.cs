@@ -92,9 +92,10 @@ namespace SqlPlastic
 
             bool isPrimaryKey = pks.Any(x => x.ColumnID == c.ColumnID);
 
-            // Render MaxLength attributes for Strings and Binary if the config file tells us too
+            // Render MaxLength attributes for Strings and Binary if the config file tells us too, but not for Timestamps!
+            bool hasLength = td.IsValueType == false && c.IsVersion == false && c.MaxLength > 0;       // Timestamps must not have a MaxLenth attribute (breaks model binder!)
             string maxLengthAttr = "";
-            if (Config.Options.MaxLengthAttributes && td.IsValueType == false && c.MaxLength > 0)
+            if (Config.Options.MaxLengthAttributes && hasLength )
                 maxLengthAttr = c.MaxLength.ToString();
 
             return new Column
