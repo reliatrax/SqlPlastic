@@ -41,7 +41,8 @@ Scenario: All tables, columns, and keys should be present
 	When I generate models with the default options
 	Then the resulting model should contain the following tables
 	| TableName      | Columns | EntityRefs | EntitySets |
-	| Customers      | 3       | 0          | 4          |
+	| Customers      | 3       | 1          | 4          |
+	| CustomerPhotos | 2       | 1          | 0          |
 	| Products       | 3       | 0          | 1          |
 	| Orders         | 3       | 1          | 1          |
 	| OrderLineItems | 4       | 2          | 0          |
@@ -64,6 +65,17 @@ Scenario: Entity Refs 2
 		| EntityRefName | KeyColumn     | ReferencedColumn | AssociatedSet  | ForeignKeyName | DeleteRule | DeleteOnNull |
 		| Order         | LineOrderID   | OrderID          | OrderLineItems | FK_Orders      | CASCADE    | true         |
 		| Product       | LineProductID | ProductID        | OrderLineItems | FK_Products    | CASCADE    | true         |
+
+Scenario: Entity Refs 3 - One-to-One relationship
+	Given a connection to the "SqlPlasticTestDB" database
+	When I generate models with the default options
+	Then the table "Customers" should contain the following entity references
+		| EntityRefName | KeyColumn         | ReferencedColumn | AssociatedSet | ForeignKeyName | DeleteRule | DeleteOnNull |
+		| CustomerPhoto | CustomerID        | CustomerID       | ---           | FK_CustomerPhotos | CASCADE | true         |
+	And the table "CustomerPhotos" should contain the following entity references
+		| EntityRefName | KeyColumn         | ReferencedColumn | AssociatedSet | ForeignKeyName | DeleteRule | DeleteOnNull |
+
+
 
 Scenario: Entity Sets 1
 	Given a connection to the "SqlPlasticTestDB" database

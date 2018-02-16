@@ -191,8 +191,13 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "Customers",
                         "3",
-                        "0",
+                        "1",
                         "4"});
+            table2.AddRow(new string[] {
+                        "CustomerPhotos",
+                        "2",
+                        "1",
+                        "0"});
             table2.AddRow(new string[] {
                         "Products",
                         "3",
@@ -234,11 +239,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EntityRefs1_SelfReferenceShouldEndInA1ByDefault()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Entity Refs 1 - Self reference should end in a 1 by default", ((string[])(null)));
-#line 53
-this.ScenarioSetup(scenarioInfo);
 #line 54
- testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 55
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 56
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -257,7 +262,7 @@ this.ScenarioSetup(scenarioInfo);
                         "FK_ManagerID",
                         "NO_ACTION",
                         "false"});
-#line 56
+#line 57
  testRunner.Then("the table \"Employees\" should contain the following entity references", ((string)(null)), table3, "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -268,11 +273,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EntityRefs2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Entity Refs 2", ((string[])(null)));
-#line 60
-this.ScenarioSetup(scenarioInfo);
 #line 61
- testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 62
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 63
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -299,8 +304,53 @@ this.ScenarioSetup(scenarioInfo);
                         "FK_Products",
                         "CASCADE",
                         "true"});
-#line 63
+#line 64
  testRunner.Then("the table \"OrderLineItems\" should contain the following entity references", ((string)(null)), table4, "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Entity Refs 3 - One-to-One relationship")]
+        public virtual void EntityRefs3_One_To_OneRelationship()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Entity Refs 3 - One-to-One relationship", ((string[])(null)));
+#line 69
+this.ScenarioSetup(scenarioInfo);
+#line 70
+ testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 71
+ testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "EntityRefName",
+                        "KeyColumn",
+                        "ReferencedColumn",
+                        "AssociatedSet",
+                        "ForeignKeyName",
+                        "DeleteRule",
+                        "DeleteOnNull"});
+            table5.AddRow(new string[] {
+                        "CustomerPhoto",
+                        "CustomerID",
+                        "CustomerID",
+                        "---",
+                        "FK_CustomerPhotos",
+                        "CASCADE",
+                        "true"});
+#line 72
+ testRunner.Then("the table \"Customers\" should contain the following entity references", ((string)(null)), table5, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "EntityRefName",
+                        "KeyColumn",
+                        "ReferencedColumn",
+                        "AssociatedSet",
+                        "ForeignKeyName",
+                        "DeleteRule",
+                        "DeleteOnNull"});
+#line 75
+ testRunner.And("the table \"CustomerPhotos\" should contain the following entity references", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -310,50 +360,50 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void EntitySets1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Entity Sets 1", ((string[])(null)));
-#line 68
+#line 80
 this.ScenarioSetup(scenarioInfo);
-#line 69
+#line 81
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 70
+#line 82
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         "EntitySetName",
                         "KeyColumn",
                         "ReferencedColumn",
                         "AssociatedRef",
                         "ForeignKeyName",
                         "DeleteRule"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Orders",
                         "CustomerID",
                         "OrderCustomerID",
                         "Customer",
                         "FK_Customers",
                         "CASCADE"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Preferences",
                         "CustomerID",
                         "CustomerID_A",
                         "Customer",
                         "FK_CustomerID_A",
                         "NO_ACTION"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Preferences1",
                         "CustomerID",
                         "CustomerID_B",
                         "Customer1",
                         "FK_CustomerID_B",
                         "NO_ACTION"});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "Preferences2",
                         "CustomerID",
                         "CustomerID_C",
                         "Customer2",
                         "FK_CustomerID_C",
                         "NO_ACTION"});
-#line 71
- testRunner.Then("the table \"Customers\" should contain the following entity sets", ((string)(null)), table5, "Then ");
+#line 83
+ testRunner.Then("the table \"Customers\" should contain the following entity sets", ((string)(null)), table7, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -363,34 +413,34 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes1_PrimaryKeyWithIdentity()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 1 - Primary Key with Identity", ((string[])(null)));
-#line 78
+#line 90
 this.ScenarioSetup(scenarioInfo);
-#line 79
+#line 91
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 80
+#line 92
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "Storage",
                         "\"_CustomerID\""});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "AutoSync",
                         "AutoSync.OnInsert"});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "DbType",
                         "\"Int NOT NULL IDENTITY\""});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "IsPrimaryKey",
                         "true"});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "IsDbGenerated",
                         "true"});
-#line 81
+#line 93
  testRunner.Then("the column \"dbo.Customers.CustomerID\" should have the following Column Attributes" +
-                    "", ((string)(null)), table6, "Then ");
+                    "", ((string)(null)), table8, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -400,31 +450,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes2_PrimaryKeyNoIdentityTableHasTIMESTAMP()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 2 - Primary Key no Identity, table has TIMESTAMP", ((string[])(null)));
-#line 89
+#line 101
 this.ScenarioSetup(scenarioInfo);
-#line 90
+#line 102
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 91
+#line 103
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "Storage",
                         "\"_MyDataTypeID\""});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "DbType",
                         "\"Int NOT NULL\""});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "IsPrimaryKey",
                         "true"});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "UpdateCheck",
                         "UpdateCheck.Never"});
-#line 92
+#line 104
  testRunner.Then("the column \"dbo.MyDataTypes.MyDataTypeID\" should have the following Column Attrib" +
-                    "utes", ((string)(null)), table7, "Then ");
+                    "utes", ((string)(null)), table9, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -434,40 +484,40 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes3_TimeStamp()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 3 - TimeStamp", ((string[])(null)));
-#line 99
+#line 111
 this.ScenarioSetup(scenarioInfo);
-#line 100
+#line 112
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 101
+#line 113
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "Storage",
                         "\"_MyTimeStamp\""});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "AutoSync",
                         "AutoSync.Always"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "DbType",
                         "\"rowversion NOT NULL\""});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "CanBeNull",
                         "false"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "IsDbGenerated",
                         "true"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "IsVersion",
                         "true"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "UpdateCheck",
                         "UpdateCheck.Never"});
-#line 102
+#line 114
  testRunner.Then("the column \"dbo.MyDataTypes.MyTimeStamp\" should have the following Column Attribu" +
-                    "tes", ((string)(null)), table8, "Then ");
+                    "tes", ((string)(null)), table10, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -477,25 +527,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes4_NullableIntColumn()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 4 - Nullable int column", ((string[])(null)));
-#line 112
+#line 124
 this.ScenarioSetup(scenarioInfo);
-#line 113
+#line 125
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 114
+#line 126
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "Storage",
                         "\"_ManagerEmployeeID\""});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "DbType",
                         "\"Int\""});
-#line 115
+#line 127
  testRunner.Then("the column \"dbo.Employees.ManagerEmployeeID\" should have the following Column Att" +
-                    "ributes", ((string)(null)), table9, "Then ");
+                    "ributes", ((string)(null)), table11, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -505,28 +555,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes5_NullableVARCHAR()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 5 - Nullable VARCHAR", ((string[])(null)));
-#line 120
+#line 132
 this.ScenarioSetup(scenarioInfo);
-#line 121
+#line 133
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 122
+#line 134
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "Storage",
                         "\"_EmployeeTitle\""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "DbType",
                         "\"VarChar(200)\""});
-            table10.AddRow(new string[] {
+            table12.AddRow(new string[] {
                         "CanBeNull",
                         "true"});
-#line 123
+#line 135
  testRunner.Then("the column \"dbo.Employees.EmployeeTitle\" should have the following Column Attribu" +
-                    "tes", ((string)(null)), table10, "Then ");
+                    "tes", ((string)(null)), table12, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -536,28 +586,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ColumnAttributes6_NonNullableVARCHAR()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Column Attributes 6 - NonNullable VARCHAR", ((string[])(null)));
-#line 129
+#line 141
 this.ScenarioSetup(scenarioInfo);
-#line 130
+#line 142
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 131
+#line 143
  testRunner.When("I generate models with the default options", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
                         "AttributeName",
                         "AttributeValue"});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "Storage",
                         "\"_EmployeeName\""});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "DbType",
                         "\"VarChar(100) NOT NULL\""});
-            table11.AddRow(new string[] {
+            table13.AddRow(new string[] {
                         "CanBeNull",
                         "false"});
-#line 132
+#line 144
  testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have the following Column Attribut" +
-                    "es", ((string)(null)), table11, "Then ");
+                    "es", ((string)(null)), table13, "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -567,20 +617,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MaxLengthAttributes1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 1", ((string[])(null)));
-#line 139
+#line 151
 this.ScenarioSetup(scenarioInfo);
-#line 140
+#line 152
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table12.AddRow(new string[] {
+            table14.AddRow(new string[] {
                         "MaxLengthAttributes",
                         "true"});
-#line 141
- testRunner.When("I generate models with the following options", ((string)(null)), table12, "When ");
-#line 144
+#line 153
+ testRunner.When("I generate models with the following options", ((string)(null)), table14, "When ");
+#line 156
  testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have a MaxLengthAttribute of \"100\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -592,20 +642,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MaxLengthAttributes2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 2", ((string[])(null)));
-#line 146
+#line 158
 this.ScenarioSetup(scenarioInfo);
-#line 147
+#line 159
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table13 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table13.AddRow(new string[] {
+            table15.AddRow(new string[] {
                         "MaxLengthAttributes",
                         "false"});
-#line 148
- testRunner.When("I generate models with the following options", ((string)(null)), table13, "When ");
-#line 151
+#line 160
+ testRunner.When("I generate models with the following options", ((string)(null)), table15, "When ");
+#line 163
  testRunner.Then("the column \"dbo.Employees.EmployeeName\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -616,20 +666,20 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MaxLengthAttributes3()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 3", ((string[])(null)));
-#line 153
+#line 165
 this.ScenarioSetup(scenarioInfo);
-#line 154
+#line 166
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table14.AddRow(new string[] {
+            table16.AddRow(new string[] {
                         "MaxLengthAttributes",
                         "true"});
-#line 155
- testRunner.When("I generate models with the following options", ((string)(null)), table14, "When ");
-#line 158
+#line 167
+ testRunner.When("I generate models with the following options", ((string)(null)), table16, "When ");
+#line 170
  testRunner.Then("the column \"dbo.MyDataTypes.MyChar1\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -640,23 +690,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MaxLengthAttributes4_TimestampColumnsShouldNotHaveMaxlength()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MaxLength Attributes 4 - Timestamp columns should not have maxlength", ((string[])(null)));
-#line 160
+#line 172
 this.ScenarioSetup(scenarioInfo);
-#line 161
+#line 173
  testRunner.Given("a connection to the \"SqlPlasticTestDB\" database", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
                         "Field",
                         "Value"});
-            table15.AddRow(new string[] {
+            table17.AddRow(new string[] {
                         "MaxLengthAttributes",
                         "true"});
-#line 162
- testRunner.When("I generate models with the following options", ((string)(null)), table15, "When ");
-#line 165
+#line 174
+ testRunner.When("I generate models with the following options", ((string)(null)), table17, "When ");
+#line 177
  testRunner.Then("the column \"dbo.MyDataTypes.MyVarChar100\" should have a MaxLengthAttribute of \"10" +
                     "0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
+#line 178
  testRunner.And("the column \"dbo.MyDataTypes.MyTimeStamp\" should have a MaxLengthAttribute of \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

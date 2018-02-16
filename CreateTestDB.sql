@@ -25,6 +25,8 @@ drop table dbo.OrderLineItems;
 GO
 drop table dbo.Orders;
 GO
+drop table dbo.CustomerPhotos;
+GO
 drop table dbo.Customers;
 GO
 drop table dbo.Products;
@@ -40,6 +42,20 @@ CREATE TABLE dbo.Customers
 	LastName VARCHAR(20) NOT NULL,
 	
 	CONSTRAINT PK_Customers PRIMARY KEY CLUSTERED  (CustomerID ASC),
+)
+GO
+
+-- One-to-One relationship with dbo.Customers
+CREATE TABLE dbo.CustomerPhotos
+(
+	CustomerID INT NOT NULL,					-- Primary Key also Foreign Key 
+	
+	PhotoBytes VARBINARY(MAX) NOT NULL,
+	
+	CONSTRAINT PK_CustomerPhotos PRIMARY KEY CLUSTERED  (CustomerID ASC),
+
+	CONSTRAINT FK_CustomerPhotos FOREIGN KEY (CustomerID)
+		REFERENCES dbo.Customers (CustomerID) ON DELETE CASCADE
 )
 GO
 

@@ -42,6 +42,8 @@ namespace SqlPlastic
 
             Table t1 = c1.Table, t2 = c2.Table;
 
+            bool isOneToOne = c1.IsPrimaryKey;
+
             // Generate property names
             FkProps fkProps = GenerateProps(c1, t2, fkd);
 
@@ -57,27 +59,46 @@ namespace SqlPlastic
                 DeleteOnNull = fkProps.DeleteOnNull ?"true" :"false"
             };
 
-            // --- Add an EntitySet from c1 <-- c2
-            var eset = new EntitySetModel
-            {
-                EntitySetName = fkProps.entitySetName,
-                KeyColumn = c2,                 // T2 is the *set*
-                ReferencedColumn = c1,          // T1 is the *ref*
-
-                ForeignKeyName = fkd.ForeignKeyName,
-                DeleteRule = fkd.OnDelete,
-            };
-
-            // Set the cross-linking association properties
-            eref.AssociatedSet = eset;
-            eset.AssociatedRef = eref;
-
             // Set the Foreign Key Column to point to this foreign key
             c1.ForeignKey = eref;
+            t1.EntityRefs.Add(eref);    // Add to the tables
 
-            // Add to the tables
-            t1.EntityRefs.Add(eref);
-            t2.EntitySets.Add(eset);
+            if (isOneToOne)
+            {
+                // --- For one-to-one relationships, Add an entity ref to t2 pointing back to t1
+                var eref2 = new EntityRefModel
+                {
+                    EntityRefName = fkProps.entityRefName,
+                    KeyColumn = c2,                 // T2 is the *ref2*
+                    ReferencedColumn = c1,          // T1 is the *ref*
+
+                    ForeignKeyName = fkd.ForeignKeyName,
+                    DeleteRule = fkd.OnDelete,
+                    DeleteOnNull = fkProps.DeleteOnNull ? "true" : "false"
+                };
+
+                // Set the cross-linking association properties
+                t2.EntityRefs.Add(eref2);        // Add to the tables
+            }
+            else
+            {
+                // --- For one-to-many relationships, Add an EntitySet from c1 <-- c2
+                var eset = new EntitySetModel
+                {
+                    EntitySetName = fkProps.entitySetName,
+                    KeyColumn = c2,                 // T2 is the *set*
+                    ReferencedColumn = c1,          // T1 is the *ref*
+
+                    ForeignKeyName = fkd.ForeignKeyName,
+                    DeleteRule = fkd.OnDelete,
+                };
+
+                // Set the cross-linking association properties
+                eref.AssociatedSet = eset;
+                eset.AssociatedRef = eref;
+                t2.EntitySets.Add(eset);        // Add to the tables
+            }
+
         }
 
         class FkProps
