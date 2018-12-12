@@ -42,7 +42,7 @@ namespace SqlPlastic
 
             Table t1 = c1.Table, t2 = c2.Table;
 
-            bool isOneToOne = c1.IsPrimaryKey;
+            bool isOneToOne = false; //#TODO fix one-to-one relationships c1.IsPrimaryKey;
 
             // Generate property names
             FkProps fkProps = GenerateProps(c1, t2, fkd);

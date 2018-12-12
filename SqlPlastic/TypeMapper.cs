@@ -42,6 +42,7 @@ namespace SqlPlastic
         {
             {"BIT", _bool },
             {"TINYINT", _byte },
+            {"SMALLINT", _int16 },
             {"INT", _int },
             {"BIGINT", _long },
             {"SMALLMONEY", _decimal },
